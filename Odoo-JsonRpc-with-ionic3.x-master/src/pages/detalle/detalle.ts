@@ -1,12 +1,15 @@
 import { OdooJsonRpc } from '../../services/odoojsonrpc';
 import { Utils } from '../../services/utils';
 import { Component, ViewChild, ElementRef } from "@angular/core";
-import { IonicPage, NavController, NavParams, Platform, AlertController, DateTime } from "ionic-angular";
+import { IonicPage, NavController, NavParams, Platform, AlertController, DateTime, MenuController } from "ionic-angular";
 import { ProspectoPage } from '../prospecto/prospecto';
 import { ServicioPage } from '../servicio/servicio';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LatLng } from '@ionic-native/google-maps';
 import { setTimeout } from 'timers';
+
+
+
 declare var google;
 
 @Component({
@@ -92,9 +95,10 @@ export class DetallePage {
   public homeMantenimiento: boolean = false;
 
   private session: any = JSON.parse(localStorage.getItem('token'));
-  constructor(public navCtrl: NavController, public navParams: NavParams, private plt: Platform, private odooRpc: OdooJsonRpc, private alertCtrl: AlertController, private sanitizer: DomSanitizer) {
+  constructor(public menuCtrl: MenuController, public navCtrl: NavController, public navParams: NavParams, private plt: Platform, private odooRpc: OdooJsonRpc, private alertCtrl: AlertController, private sanitizer: DomSanitizer) {
     this.oportunity = navParams.get("id");
     this.valida_session();
+    this.menuCtrl.enable(false);
   }
   ionViewDidLoad() {
     this.display();

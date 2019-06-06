@@ -26,6 +26,7 @@ export class LoginPage {
   public logiData: any;
 
   constructor(public menu: MenuController, public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils, private androidPermissions: AndroidPermissions, private oneSignal: OneSignal, private loadingCtrl: LoadingController, private alertCtrl: AlertController, public network: Network, public proNet: NetworkProvider) {
+
     this.getNetwork();
     this.menu.enable(false, 'salesman');
     this.menu.enable(false, 'technician');

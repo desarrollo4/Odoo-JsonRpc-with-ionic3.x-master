@@ -88,8 +88,24 @@ export class HomePage {
   constructor(private navCtrl: NavController, private odooRpc: OdooJsonRpc, private alertCtrl: AlertController, private network: Network, private alert: AlertController, private utils: Utils, public loadingCtrl: LoadingController, private oneSignal: OneSignal, public menu: MenuController) {
 
   }
-  ionViewDidLoad() {
 
+  Refresh(refresher) {
+    console.log('Begin async operation');
+    this.listaOportunidades = [];
+    this.listaServicios = [];
+    setTimeout(() => {
+      this.display();
+      refresher.complete();
+    }, 1000);
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.target.complete();
+    }, 2000);
+  }
+
+  ionViewDidEnter(){
+  }
+  ionViewDidLoad() {
     let loading = this.loadingCtrl.create({
       content: "Estamos preparando todo..."
     });

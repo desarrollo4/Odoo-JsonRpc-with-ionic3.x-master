@@ -25,13 +25,19 @@ import { ActaDigitalPage } from '../pages/acta-digital/acta-digital'
 import { HistorialServiciosPage } from '../pages/historial-servicios/historial-servicios';
 import { OneSignal } from '@ionic-native/onesignal';
 import { ModalPage } from '../pages/modal/modal';
-import { GoogleMaps } from '@ionic-native/google-maps';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiProvider } from '../providers/api/api';
 import { DetallePage } from '../pages/detalle/detalle';
 import { DataBaseProvider } from '../providers/data-base/data-base';
 import { NetworkProvider } from '../providers/network/network';
 import { SQLite} from '@ionic-native/sqlite';
+import {
+  GoogleMaps,
+  GoogleMap,
+  CameraPosition,
+  MarkerOptions
+} from '@ionic-native/google-maps';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @NgModule({
   declarations: [
@@ -79,7 +85,7 @@ import { SQLite} from '@ionic-native/sqlite';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     File,
     FileChooser,
-    FileTransfer,
+    /*FileTransfer,*/
     FileTransferObject,
     Camera,
     AndroidPermissions,
@@ -87,8 +93,9 @@ import { SQLite} from '@ionic-native/sqlite';
     GoogleMaps,
     ApiProvider,
     DataBaseProvider,
-    NetworkProvider, 
-    SQLite
+    NetworkProvider,
+    SQLite,
+    Geolocation
   ]
 })
 export class AppModule { }

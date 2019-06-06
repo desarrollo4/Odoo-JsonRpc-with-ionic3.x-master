@@ -23,7 +23,7 @@
     <ion-item *ngIf="list_necesidades?.length > 0">
       <ion-label stacked>Sistema Intervenido: </ion-label>
       <ion-select [(ngModel)]="necCliente" cancelText="Cancelar" #necesidad (ngModelChange)="getServiceCategory(necesidad.value)">
-        <ion-option *ngFor="let necesidad of list_necesidades" value="{{necesidad.id}}">{{necesidad.name}}</ion-option>
+        <ion-option *ngFor="let necesidad of list_necesidades" value="{{necesidad.id}}"><p>{{necesidad.name}}</p></ion-option>
       </ion-select>
     </ion-item>
 
@@ -44,7 +44,7 @@
         <ion-option *ngFor="let servicio of list_service_category" value="{{servicio.id}}">{{servicio.name}}</ion-option>
       </ion-select>
     </ion-item>
-    
+
     <!--Tercer Filtro en caso de ser equipos metalmecanicos-->
     <ion-item *ngIf="list_spare_location?.length > 0 && typeMaintenance == 'metalmecanico'">
       <ion-label stacked> Locación del Subsistema Intervenido: </ion-label>
@@ -57,7 +57,7 @@
     <ion-item *ngIf="list_items.length > 0">
       <ion-label stacked>Equipo Afectado: </ion-label>
       <ion-select [(ngModel)]="products" cancelText="Cancelar" #product (ngModelChange)="setCantidadItem(product.value)">
-        <ion-option *ngFor="let item of list_items" value="{{item.id}}"><ion-scroll scrollx="true"> {{item.name}}</ion-scroll></ion-option>
+        <ion-option *ngFor="let item of list_items" value="{{item.id}}"><ion-scroll scrollx="true"> <p>{{item.name}} </p></ion-scroll></ion-option>
       </ion-select>
     </ion-item>
   </ion-list>
