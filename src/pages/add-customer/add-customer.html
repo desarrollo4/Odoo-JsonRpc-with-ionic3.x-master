@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-navbar *ngIf="homeComercial" color="secondary">
+    <ion-title>Agregar Cliente</ion-title>
+    <ion-buttons end>
+      <button ion-button clear (click)="saveData()">
+        Guardar Cliente
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-navbar *ngIf="homeMantenimiento" color="primary">
+    <ion-title>Agregar Cliente</ion-title>
+    <ion-buttons end>
+      <button ion-button clear (click)="saveData()">
+        Guardar Cliente
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+
+  <ion-list no-lines>
+
+    <ion-list radio-group [(ngModel)]="company_type">
+      <ion-list-header>
+        Tipo Cliente
+      </ion-list-header>
+      <ion-item>
+        <ion-label>Natural</ion-label>
+        <ion-radio value="person"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Jurdica</ion-label>
+        <ion-radio value="company"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Cliente Principal</ion-label>
+        <ion-select [(ngModel)]="parent_id" #cli id="cli">
+          <ion-option value=""></ion-option>
+          <ion-option *ngFor="let i of listaClientes" value="{{i.id}}">{{i.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-item>
+      <ion-label floating>Nombre</ion-label>
+      <ion-input type="text" [(ngModel)]="firstname" name="firstname"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Apellido</ion-label>
+      <ion-input type="text" [(ngModel)]="lastname" name="lastname"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label staced>Tipo Identificación</ion-label>
+      <ion-select [(ngModel)]="vat_type">
+        <ion-option value="13">Cédula Ciudadania</ion-option>
+        <ion-option value="22">Cédula Extranjeria</ion-option>
+        <ion-option value="31">NIT/RUT</ion-option>
+        <ion-option value="41">Pasaporte</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Identificación</ion-label>
+      <ion-input type="text" [(ngModel)]="vat_vd" name="vat_vd"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Dirección</ion-label>
+      <ion-input type="text" [(ngModel)]="street" name="street"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Ciudad</ion-label>
+      <ion-select [(ngModel)]="state_id">
+        <ion-option *ngFor="let city of listCity" value="{{city.code}}">{{city.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Teléfono</ion-label>
+      <ion-input type="number" [(ngModel)]="phone" name="phone"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Móvil</ion-label>
+      <ion-input type="number" [(ngModel)]="mobile" name="mobile"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Correo</ion-label>
+      <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
+    </ion-item>
+
+  </ion-list>
+</ion-content>

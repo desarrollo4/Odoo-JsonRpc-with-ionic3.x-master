@@ -1,0 +1,163 @@
+<!-- Header-->
+<ion-header>
+
+  <!-- navegador-->
+  <ion-navbar color="secondary">
+    <ion-title>Formulario de Oportunidad</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only clear (click)="saveData()">
+        Guardar
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <!-- fin del navegador-->
+  <!-- Segmentos o pestañas-->
+  <ion-toolbar no-border-top no-border-button color="no-color">
+    <ion-segment [(ngModel)]="pestanias" color="secondary">
+      <ion-segment-button value="oportunidad">
+        Oportunidad
+      </ion-segment-button>
+      <ion-segment-button value="infoContacto">
+        Información de Contacto
+      </ion-segment-button>
+      <ion-segment-button value="notasInt">
+        Notas Internas
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <!-- Final de Segmentos o pestañas-->
+</ion-header>
+<!-- Final de header-->
+
+<ion-content padding>
+  <div [ngSwitch]="pestanias">
+    <ion-list no-lines *ngSwitchCase="'oportunidad'">
+      <ion-item>
+        <ion-label>Nombre Oportunidad</ion-label>
+        <ion-input [(ngModel)]="name" name="name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Probabilidad</ion-label>
+        <ion-range min="0" max="100" step="25" [(ngModel)]="probabilidad">
+          <ion-label range-left>0%</ion-label>
+          <ion-label range-right>100%</ion-label>
+        </ion-range>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Cliente</ion-label>
+        <ion-select [(ngModel)]="cliente" #cli id="cli" (ionChange)="persistCliente()">
+          <ion-option value="addCustomer"> <--CREAR CLIENTE NUEVO--> </ion-option>
+          <ion-option *ngFor="let i of listaClientes" value="{{i.id}}">{{i.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Correo</ion-label>
+        <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Telefono</ion-label>
+        <ion-input type="tel" [(ngModel)]="telefono" name="telefono"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Telefono movil</ion-label>
+        <ion-input type="tel" [(ngModel)]="mobil" name="mobil"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Siguiente Actividad</ion-label>
+        <ion-select [(ngModel)]="nextAcitivity">
+          <ion-option value="1">Correo</ion-option>
+          <ion-option value="2">Llamar</ion-option>
+          <ion-option value="3">Tarea</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Fecha de Actividad</ion-label>
+        <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="fechaActividad" name="fechaActividad"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Actividad</ion-label>
+        <ion-input [(ngModel)]="titleAction" name="titleAction"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-list radio-group [(ngModel)]="tipoOportunidad">
+          <ion-list-header>
+            Tipo de Oportunidad
+          </ion-list-header>
+          <ion-item>
+            <ion-label>Intalación</ion-label>
+            <ion-radio value="instalacion"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>Mantenimiento</ion-label>
+            <ion-radio value="mantenimiento"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>Suministro</ion-label>
+            <ion-radio value="suministro"></ion-radio>
+          </ion-item>
+        </ion-list>
+      </ion-item>
+      <ion-item>
+        <ion-label>Cierre Previsto</ion-label>
+        <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="cierrePrevisto" name="cierrePrevisto"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>URL</ion-label>
+        <ion-input type="url" [(ngModel)]="website" name="website"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Vendedor</ion-label>
+        <ion-input [(ngModel)]="vendedor" class="capitalize" name="vendedor" readonly="true" style="text-transform: capitalize;"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Calificación</ion-label>
+        <ion-range min="0" max="3" step="1" [(ngModel)]="calificacion">
+          <ion-icon small range-left name="star" style="color: #FFEA00;"></ion-icon>
+          <ion-icon large range-right name="star" style="color: #FFEA00;"></ion-icon>
+        </ion-range>
+      </ion-item>
+      <ion-item>
+        <ion-label>Etiquetas</ion-label>
+        <ion-select [(ngModel)]="tags" multiple="true">
+          <ion-option *ngFor="let tag of listaTags" value="{{tag.id}}">{{tag.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-list no-lines *ngSwitchCase="'infoContacto'">
+      <ion-item>
+        <ion-label>Dirección</ion-label>
+        <ion-input [(ngModel)]="dirContact" name="dirContact"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Ciudad</ion-label>
+        <ion-select [(ngModel)]="city">
+          <ion-option *ngFor="let city of listCity" value="{{city.id}}">{{city.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Nombre Contacto</ion-label>
+        <ion-input [(ngModel)]="nameContact" name="nameContact"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Función</ion-label>
+        <ion-input [(ngModel)]="functionContact" name="functionContact"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Móvil</ion-label>
+        <ion-input type="number" [(ngModel)]="movilContact" name="movilContact"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Correo</ion-label>
+        <ion-input type="email" [(ngModel)]="emailContact" name="emailContact"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-list no-lines *ngSwitchCase="'notasInt'">
+      <ion-item>
+        <ion-label>Notas Internas</ion-label>
+        <ion-input placeholder="Text Input" [(ngModel)]="notaInterna" name="notaInterna"></ion-input>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
