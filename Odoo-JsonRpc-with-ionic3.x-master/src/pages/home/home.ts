@@ -2,18 +2,21 @@ import { FormProbabilidadPage } from "../form-probabilidad/form-probabilidad";
 import { Utils } from "../../services/utils";
 import { DetallePage } from "../detalle/detalle";
 import { OdooJsonRpc } from "../../services/odoojsonrpc";
-import { Component } from "@angular/core";
-import { NavController, AlertController, LoadingController, MenuController } from "ionic-angular";
+import { Component, ViewChild } from "@angular/core";
+import { NavController, AlertController, LoadingController, MenuController, ModalController, Searchbar} from "ionic-angular";
 import { Network } from "@ionic-native/network";
 import { ProfilePage } from "../profile/profile";
 import { OneSignal } from '@ionic-native/onesignal';
-
+import { NotificacionesPage } from './../notificaciones/notificaciones';
 
 @Component({
   selector: "page-home",
   templateUrl: "home.html"
 })
 export class HomePage {
+  @ViewChild('searchbar') searchbar:Searchbar;
+
+
   // splash = true;
   doRefresh(refresher) {
     this.listaOportunidades = [];
@@ -85,9 +88,49 @@ export class HomePage {
   private list_description: any;
   private logiData: any;
 
-  constructor(private navCtrl: NavController, private odooRpc: OdooJsonRpc, private alertCtrl: AlertController, private network: Network, private alert: AlertController, private utils: Utils, public loadingCtrl: LoadingController, private oneSignal: OneSignal, public menu: MenuController) {
+  constructor(public modalController: ModalController, private navCtrl: NavController, private odooRpc: OdooJsonRpc, private alertCtrl: AlertController, private network: Network, private alert: AlertController, private utils: Utils, public loadingCtrl: LoadingController, private oneSignal: OneSignal, public menu: MenuController) {
 
   }
+
+  Notifications() {
+    let modal = this.modalController.create(NotificacionesPage);
+    modal.present();
+  }
+
+  search(){
+    var title     = document.getElementById('title');
+    var noti      = document.getElementById('noti');
+    var perfil    = document.getElementById('perfil');
+    var searchbar = document.getElementById('searchbar');
+    var closebar  = document.getElementById('closebar');
+    var btnsearch = document.getElementById('btnsearch');
+
+    title.style.display     = "none";
+    noti.style.display      = "none";
+    perfil.style.display    = "none";
+    searchbar.style.display = "block";
+    btnsearch.style.display = "none";
+    closebar.style.display  = "block";
+    this.searchbar.setFocus();
+
+  }
+
+  closebar(){
+    var title     = document.getElementById('title');
+    var noti      = document.getElementById('noti');
+    var perfil    = document.getElementById('perfil');
+    var closebar  = document.getElementById('closebar');
+    var btnsearch = document.getElementById('btnsearch');
+    var searchbar = document.getElementById('searchbar');
+
+    searchbar.style.display = "none";
+    btnsearch.style.display = "block";
+    title.style.display     = "block";
+    noti.style.display      = "block";
+    perfil.style.display    = "block";
+    closebar.style.display  = "none";
+  }
+
 
   Refresh(refresher) {
     console.log('Begin async operation');

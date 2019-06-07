@@ -22,25 +22,31 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>
+    <ion-title id="title">
       Mantenimientos
     </ion-title>
 
+      <ion-searchbar #searchbar style="display:none"  id="searchbar" placeholder="Buscar"></ion-searchbar>
 
-    <ion-buttons end>
-      <button ion-button icon-only>
+    <ion-buttons end id="noti" >
+      <button ion-button icon-only (click)="Notifications()">
         <ion-icon name="notifications"></ion-icon>
       </button>
     </ion-buttons>
 
-    <ion-buttons end>
-      <button ion-button icon-only>
+    <ion-buttons end id="btnsearch" >
+      <button ion-button icon-only (click)="search()">
         <ion-icon name="search"></ion-icon>
       </button>
     </ion-buttons>
 
+    <ion-buttons end id="closebar" style="display:none">
+      <button ion-button icon-only (click)="closebar()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
 
-    <ion-buttons end>
+    <ion-buttons end id="perfil">
       <button ion-button icon-only (click)="viewProfile()">
         <ion-icon name="person"></ion-icon>
       </button>

@@ -11,6 +11,8 @@ import { OdooJsonRpc } from '../services/odoojsonrpc';
 import { ParallaxDirective } from '../directives/parallax/parallax';
 import { ProfilePage } from '../pages/profile/profile';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { NotificacionesPage } from '../pages/notificaciones/notificaciones';
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { FormProbabilidadPage } from "../pages/form-probabilidad/form-probabilidad";
 import { ProspectoPage } from "../pages/prospecto/prospecto";
@@ -38,6 +40,7 @@ import {
   MarkerOptions
 } from '@ionic-native/google-maps';
 import { Geolocation } from '@ionic-native/geolocation';
+import { from } from 'rxjs/observable/from';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,8 @@ import { Geolocation } from '@ionic-native/geolocation';
     ServicioPage,
     ActaDigitalPage,
     HistorialServiciosPage,
-    DetallePage
+    DetallePage,
+    NotificacionesPage
   ],
   imports: [
     BrowserModule,
@@ -75,7 +79,8 @@ import { Geolocation } from '@ionic-native/geolocation';
     ServicioPage,
     ActaDigitalPage,
     HistorialServiciosPage,
-    DetallePage
+    DetallePage,
+    NotificacionesPage
   ],
   providers: [
     Network,
