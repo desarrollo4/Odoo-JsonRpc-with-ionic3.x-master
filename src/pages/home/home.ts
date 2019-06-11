@@ -8,6 +8,7 @@ import { Network } from "@ionic-native/network";
 import { ProfilePage } from "../profile/profile";
 import { OneSignal } from '@ionic-native/onesignal';
 import { NotificacionesPage } from './../notificaciones/notificaciones';
+import { ActaDigitalPage } from '../acta-digital/acta-digital';
 
 @Component({
   selector: "page-home",
@@ -390,7 +391,7 @@ export class HomePage {
         alerta.addButton({
           text: 'OK',
           handler: dataDesc => {
-            this.update_mantenimiento('cancel', data, dataDesc, servicio);
+            this.generateActaDigital('cancel', data, dataDesc, servicio);
           }
         });
         alerta.present();
@@ -422,26 +423,27 @@ export class HomePage {
       text: 'OK',
       handler: data => {
         this.get_description(data);
-        let alerta = this.alertCtrl.create();
-        alerta.setTitle('Descripción de Cita Fallida');
-
-        for (let desc of this.list_description) {
-          alerta.addInput({
-            type: 'radio',
-            label: desc.name,
-            value: desc.id,
-            checked: false
-          });
-        }
-
-        alerta.addButton('Cancel');
-        alerta.addButton({
-          text: 'OK',
-          handler: dataDesc => {
-            this.update_mantenimiento('fail', data, dataDesc, servicio);
+        setTimeout(() => {
+          let alerta = this.alertCtrl.create();
+          alerta.setTitle('Descripción de Cita Fallida');
+          for (let desc of this.list_description) {
+            alerta.addInput({
+              type: 'radio',
+              label: desc.name,
+              value: desc.id,
+              checked: false
+            });
           }
-        });
-        alerta.present();
+          alerta.addButton('Cancelar');
+          alerta.addButton({
+            text: 'OK',
+            handler: dataDesc => {
+              this.generateActaDigital('fail', data, dataDesc, servicio);
+            }
+          });
+          alerta.present();
+
+        },500);
       }
     });
     alert.present();
@@ -474,23 +476,33 @@ export class HomePage {
 
   }
 
-  private update_mantenimiento(motivo, cause, desc, servicio) {
+  private generateActaDigital(motivo, causa, detalleCausa, servicio) {
+    let infoCausa: Array<any> = [];
+    let infoDetalleCausa: Array<any> = [];
+
+    for (let i = 0; i < this.list_cause.length; i++) {
+      if (this.list_cause[i].id == causa) {
+        infoCausa[0] = this.list_cause[i].id;
+        infoCausa[1] = this.list_cause[i].name;
+      }
+    }
+    for (let j = 0; j < this.list_description.length; j++) {
+      if (this.list_description[j].id == detalleCausa) {
+        infoDetalleCausa[0] = this.list_description[j].id;
+        infoDetalleCausa[1] = this.list_description[j].name;
+      }
+    }
     let data = {
-      fail_cause_id: cause,
+      fail_cause_id: infoCausa,
       assignment_status: motivo,
-      fail_description_id: desc,
+      fail_description_id: infoDetalleCausa,
       finished: 'true',
       kanban_state: 'blocked'
     }
-    this.odooRpc.updateRecord(this.tableServicios, this.listaServicios[servicio].id, data);
-    this.utils.presentToast(
-      this.listaServicios[servicio].name + " se Elimino con Exito",
-      5000,
-      true,
-      "top"
-    );
-    this.listaServicios.splice(servicio, 1);
-
+    let params: Array<any> = [];
+    params['dataMantenimiento'] = this.listaServicios[servicio];
+    params['data'] = data;
+    this.navCtrl.push(ActaDigitalPage, params);
   }
 
 }
