@@ -38,10 +38,10 @@ export class ActaDigitalPage {
   private data: Array<any> = [];
   private firma: String = "";
   private Datafirma: String = "";
-  private observation_user: any;
-  private functionary_vat: any;
-  private functionary_name: any;
-  private functionary_email: any;
+  private observation_user: any = null;
+  private functionary_vat: any = null;
+  private functionary_name: any = null;
+  private functionary_email: any = null;
   private username: any = JSON.parse(localStorage.getItem('token'))['username'];
   public finish: Boolean = false;
   private listaClientes: any;
@@ -138,13 +138,25 @@ export class ActaDigitalPage {
     }
   }
   private acta_cita_fallida() {
-    let table = "";
+    let table = "project.task";
+    let date: Date = new Date();
+    let day = date.getDate();
+    let month = (date.getMonth() + 1 < 10) ? "0" + Number(date.getMonth() + 1) : date.getMonth() + 1;
+    let year = date.getFullYear();
     let data = {
-      fail_cause_id: this.data['fail_cause_id'][1],
+      fail_cause_id: this.data['fail_cause_id'][0],
       assignment_status: this.data['assignment_status'],
-      fail_description_id: this.data['fail_description_id'][1],
+      fail_description_id: this.data['fail_description_id'][0],
       finished: this.data['finished'],
-      kanban_state: this.data['kanban_state']
+      kanban_state: this.data['kanban_state'],
+      functionary_vat: this.functionary_vat,
+      functionary_name: this.functionary_name,
+      functionary_email: this.functionary_email,
+      origin_tech_coord: null,
+      entry_time: null,
+      departure_time: year + "-" + month + "-" + day + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
+      notes: this.observation_user,
+      customer_sign_image: this.Datafirma
     }
     this.odooRpc.updateRecord(table, this.dataMantenimiento.id, data).then(() => {
       this.navCtrl.setRoot(HomePage);

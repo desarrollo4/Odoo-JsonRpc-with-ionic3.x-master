@@ -338,26 +338,27 @@ export class HomePage {
       text: 'OK',
       handler: data => {
         this.get_description(data);
-        let alerta = this.alertCtrl.create();
-        alerta.setTitle('Descripción de Cita Fallida');
-
-        for (let desc of this.list_description) {
-          alerta.addInput({
-            type: 'radio',
-            label: desc.name,
-            value: desc.id,
-            checked: false
-          });
-        }
-
-        alerta.addButton('Cancelar');
-        alerta.addButton({
-          text: 'OK',
-          handler: dataDesc => {
-            this.generateActaDigital('fail', data, dataDesc, servicio);
+        setTimeout(() => {
+          let alerta = this.alertCtrl.create();
+          alerta.setTitle('Descripción de Cita Fallida');
+          for (let desc of this.list_description) {
+            alerta.addInput({
+              type: 'radio',
+              label: desc.name,
+              value: desc.id,
+              checked: false
+            });
           }
-        });
-        alerta.present();
+          alerta.addButton('Cancelar');
+          alerta.addButton({
+            text: 'OK',
+            handler: dataDesc => {
+              this.generateActaDigital('fail', data, dataDesc, servicio);
+            }
+          });
+          alerta.present();
+
+        },500);
       }
     });
     alert.present();

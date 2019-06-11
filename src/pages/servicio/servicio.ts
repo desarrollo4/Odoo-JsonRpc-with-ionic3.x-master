@@ -369,14 +369,12 @@ export class ServicioPage {
             params["servicios"].push(ser);
           }
         }
-
-
       });
       this.navCtrl.push(ActaDigitalPage, params);
     } else {
       const alert = this.alertCtrl.create({
         title: 'ERROR',
-        subTitle: 'Por favor agregue la firma del encargado',
+        subTitle: 'Datos incompletos. Por favor revise los campos de los elementos',
         buttons: ['OK']
       });
       alert.present();
