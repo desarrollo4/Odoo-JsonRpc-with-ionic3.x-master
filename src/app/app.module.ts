@@ -31,6 +31,7 @@ import { DetallePage } from '../pages/detalle/detalle';
 import { DataBaseProvider } from '../providers/data-base/data-base';
 import { NetworkProvider } from '../providers/network/network';
 import { SQLite} from '@ionic-native/sqlite';
+import { NotificacionesPage} from "../pages/notificaciones/notificaciones"
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { SQLite} from '@ionic-native/sqlite';
     ServicioPage,
     ActaDigitalPage,
     HistorialServiciosPage,
-    DetallePage
+    DetallePage,
+    NotificacionesPage
   ],
   imports: [
     BrowserModule,
@@ -68,7 +70,8 @@ import { SQLite} from '@ionic-native/sqlite';
     ServicioPage,
     ActaDigitalPage,
     HistorialServiciosPage,
-    DetallePage
+    DetallePage,
+    NotificacionesPage
   ],
   providers: [
     Network,
@@ -78,7 +81,6 @@ import { SQLite} from '@ionic-native/sqlite';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     File,
     FileChooser,
-    FileTransfer,
     FileTransferObject,
     Camera,
     OneSignal,

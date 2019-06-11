@@ -52,4 +52,24 @@ page-home {
       opacity: 1;
     }
   }
+
+  .card-md {
+    padding: 10px;
+    margin: 3px;
+    width: 97% !important;
+  }
+  .list-md ion-item-options {
+    border-bottom: 0px solid #dedede !important ;
+  }
+  .list-md ion-item-options .button {
+    height: 83% !important;
+    top: 15px !important;
+  }
+  .list-md {
+    margin: 0px !important;
+  }
+  .label-md {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+  }
 }

@@ -6,10 +6,12 @@
     <ion-title>
       Oportunidades
     </ion-title>
+
     <ion-buttons end>
       <button ion-button icon-only (click)="viewProfile()">
         <ion-icon name="person"></ion-icon>
       </button>
+
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -20,10 +22,31 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>
+    <ion-title id="title">
       Mantenimientos
     </ion-title>
-    <ion-buttons end>
+
+      <ion-searchbar  [(ngModel)]="searchTerm" (ionInput)="setFilter()" #searchbar style="display:none"  id="searchbar" placeholder="Buscar"></ion-searchbar>
+
+    <ion-buttons end id="noti" >
+      <button ion-button icon-only (click)="Notifications()">
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons end id="btnsearch" >
+      <button ion-button icon-only (click)="search()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons end id="closebar" style="display:none">
+      <button ion-button icon-only (click)="closebar()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons end id="perfil">
       <button ion-button icon-only (click)="viewProfile()">
         <ion-icon name="person"></ion-icon>
       </button>
@@ -37,20 +60,53 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <!-- <button ion-button secondary menuToggle>Toggle Menu</button> -->
-  <ion-list *ngIf="homeComercial" no-lines [virtualScroll]="listaOportunidades">
+<!--   <ion-list *ngIf="homeComercial" no-lines [virtualScroll]="listaOportunidades">
     <ion-item-sliding *virtualItem="let item; let i = index">
+
       <ion-item (click)="view(i)">
-        <h1>{{item.name}}</h1>
-        <p>{{item.partner_id}}</p>
-        <h2 *ngIf="item.colorDanger">
-          <p style="color:#F44336;">{{item.probability}}%</p>
-        </h2>
-        <h2 *ngIf="item.colorwarning">
-          <p style="color: #FF9800;">{{item.probability}}%</p>
-        </h2>
-        <h2 *ngIf="item.colorSuccess">
-          <p style="color:#4CAF50;">{{item.probability}}%</p>
-        </h2>
+        <ion-card>
+          <h1>{{item.name}}</h1>
+          <p>{{item.partner_id}}</p>
+          <h2 *ngIf="item.colorDanger">
+            <p style="color:#F44336;">{{item.probability}}%</p>
+          </h2>
+          <h2 *ngIf="item.colorwarning">
+            <p style="color: #FF9800;">{{item.probability}}%</p>
+          </h2>
+          <h2 *ngIf="item.colorSuccess">
+            <p style="color:#4CAF50;">{{item.probability}}%</p>
+          </h2>
+      </ion-card>
+
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="primary" (click)="FormProbabilidad('update',i)">
+          Actualizar
+        </button>
+        <button ion-button color="danger" (click)="delete(i)">
+          Eliminar
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list> -->
+<div *ngIf="homeComercial">
+  <ion-list   *ngFor="let item of filterDataOportunidades; let i = index">
+    <ion-item-sliding>
+      <ion-item (click)="view(i)">
+        <ion-card>
+          <h1>{{item.name}}</h1>
+          <p>{{item.partner_id}}</p>
+          <h2 *ngIf="item.colorDanger">
+            <p style="color:#F44336;">{{item.probability}}%</p>
+          </h2>
+          <h2 *ngIf="item.colorwarning">
+            <p style="color: #FF9800;">{{item.probability}}%</p>
+          </h2>
+          <h2 *ngIf="item.colorSuccess">
+            <p style="color:#4CAF50;">{{item.probability}}%</p>
+          </h2>
+      </ion-card>
+
       </ion-item>
       <ion-item-options>
         <button ion-button color="primary" (click)="FormProbabilidad('update',i)">
@@ -62,28 +118,32 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+</div>
 
-
-  <ion-list *ngIf="homeMantemimiento" no-lines [virtualScroll]="listaServicios">
-    <ion-item-sliding *virtualItem="let item; let i = index">
+<div  *ngIf="homeMantemimiento">
+  <ion-list   *ngFor="let item of filterData; let i = index">
+    <ion-item-sliding>
       <ion-item (click)="view(i)">
-        <h1>{{item.name}}</h1>
-        <p>{{item.partner_id[1]}}</p>
-        <p style="color:grey"><strong>{{item.sec}}</strong></p>
-        <p style="color:grey"><strong>Número SAP: </strong>{{item.number_sap}}</p>
-        <p style="color:grey"><strong>{{item.city_id}}<br>{{item.location_id}}|{{item.branch_type}}</strong></p>
+        <ion-card>
+          <h1>{{item.name}}</h1>
+          <p>{{item.partner_id[1]}}</p>
+          <p style="color:grey"><strong>{{item.sec}}</strong></p>
+          <p style="color:grey"><strong>Número SAP: </strong>{{item.number_sap}}</p>
+          <p style="color:grey"><strong>{{item.city_id}}<br>{{item.location_id}}|{{item.branch_type}}</strong></p>
+        </ion-card>
       </ion-item>
       <ion-item-options>
         <button ion-button color="danger" (click)="citaFallida(i)">
           Cita Fallida
         </button>
+
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+</div>
 
-  
-    <button *ngIf="homeComercial" ion-fab color="secondary" (click)="FormProbabilidad('create')">
-      <ion-icon name="md-add"></ion-icon>
-    </button>
+  <button *ngIf="homeComercial" ion-fab color="secondary" (click)="FormProbabilidad('create')">
+    <ion-icon name="md-add"></ion-icon>
+  </button>
 
 </ion-content>

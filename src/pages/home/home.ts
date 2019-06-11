@@ -2,19 +2,21 @@ import { FormProbabilidadPage } from "../form-probabilidad/form-probabilidad";
 import { Utils } from "../../services/utils";
 import { DetallePage } from "../detalle/detalle";
 import { OdooJsonRpc } from "../../services/odoojsonrpc";
-import { Component } from "@angular/core";
-import { NavController, AlertController, LoadingController, MenuController } from "ionic-angular";
+import { Component, ViewChild } from "@angular/core";
+import { NavController, AlertController, LoadingController, MenuController, ModalController, Searchbar} from "ionic-angular";
 import { Network } from "@ionic-native/network";
 import { ProfilePage } from "../profile/profile";
 import { OneSignal } from '@ionic-native/onesignal';
-import { ActaDigitalPage } from '../acta-digital/acta-digital';
-
+import { NotificacionesPage } from './../notificaciones/notificaciones';
 
 @Component({
   selector: "page-home",
   templateUrl: "home.html"
 })
 export class HomePage {
+  @ViewChild('searchbar') Vsearchbar:Searchbar;
+
+
   // splash = true;
   doRefresh(refresher) {
     this.listaOportunidades = [];
@@ -86,11 +88,93 @@ export class HomePage {
   private list_description: any;
   private logiData: any;
 
-  constructor(private navCtrl: NavController, private odooRpc: OdooJsonRpc, private alertCtrl: AlertController, private network: Network, private alert: AlertController, private utils: Utils, public loadingCtrl: LoadingController, private oneSignal: OneSignal, public menu: MenuController) {
+  allData = []; //Store all data from provider
+  filterData = [];//Store filtered data
+  searchTerm: string = '';
+
+  allDataOportunidades = [];
+  filterDataOportunidades = [];
+  searchOpor: string = '';
+
+  constructor(public modalController: ModalController, private navCtrl: NavController, private odooRpc: OdooJsonRpc, private alertCtrl: AlertController, private network: Network, private alert: AlertController, private utils: Utils, public loadingCtrl: LoadingController, private oneSignal: OneSignal, public menu: MenuController) {
 
   }
-  ionViewDidLoad() {
 
+  Notifications() {
+    let modal = this.modalController.create(NotificacionesPage);
+    modal.present();
+  }
+
+  search(){
+    var title     = document.getElementById('title');
+    var noti      = document.getElementById('noti');
+    var perfil    = document.getElementById('perfil');
+    var searchbar = document.getElementById('searchbar');
+    var closebar  = document.getElementById('closebar');
+    var btnsearch = document.getElementById('btnsearch');
+
+    title.style.display     = "none";
+    noti.style.display      = "none";
+    perfil.style.display    = "none";
+    searchbar.style.display = "block";
+    btnsearch.style.display = "none";
+    closebar.style.display  = "block";
+    this.Vsearchbar.setFocus();
+    
+
+  }
+
+  closebar(){
+    var title     = document.getElementById('title');
+    var noti      = document.getElementById('noti');
+    var perfil    = document.getElementById('perfil');
+    var closebar  = document.getElementById('closebar');
+    var btnsearch = document.getElementById('btnsearch');
+    var searchbar = document.getElementById('searchbar');
+    
+    searchbar.nodeValue = '';
+    this.Vsearchbar.clearInput(null);
+    this.allData = this.listaServicios;
+    this.filterData = this.allData;
+
+    searchbar.style.display = "none";
+    this.searchTerm = '';
+    btnsearch.style.display = "block";
+    title.style.display     = "block";
+    noti.style.display      = "block";
+    perfil.style.display    = "block";
+    closebar.style.display  = "none";
+  }
+
+
+  Refresh(refresher) {
+    console.log('Begin async operation');
+    this.listaOportunidades = [];
+    this.listaServicios = [];
+    setTimeout(() => {
+      this.display();
+      refresher.complete();
+    }, 1000);
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.target.complete();
+    }, 2000);
+  }
+
+  ionViewDidEnter(){
+    this.allData = this.listaServicios;
+    this.filterData = this.allData;
+
+    this.allDataOportunidades     = this.listaOportunidades;
+    this.filterDataOportunidades  = this.allDataOportunidades;
+  }
+  setFilter(){
+    this.filterData = this.allData.filter((item) => {
+      return item.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
+    });
+  }
+  
+  ionViewDidLoad() {
     let loading = this.loadingCtrl.create({
       content: "Estamos preparando todo..."
     });
@@ -306,7 +390,7 @@ export class HomePage {
         alerta.addButton({
           text: 'OK',
           handler: dataDesc => {
-            this.generateActaDigital('cancel', data, dataDesc, servicio);
+            this.update_mantenimiento('cancel', data, dataDesc, servicio);
           }
         });
         alerta.present();
@@ -333,32 +417,31 @@ export class HomePage {
       }
     }
 
-    alert.addButton('Cancelar');
+    alert.addButton('Cancel');
     alert.addButton({
       text: 'OK',
       handler: data => {
         this.get_description(data);
-        setTimeout(() => {
-          let alerta = this.alertCtrl.create();
-          alerta.setTitle('Descripción de Cita Fallida');
-          for (let desc of this.list_description) {
-            alerta.addInput({
-              type: 'radio',
-              label: desc.name,
-              value: desc.id,
-              checked: false
-            });
-          }
-          alerta.addButton('Cancelar');
-          alerta.addButton({
-            text: 'OK',
-            handler: dataDesc => {
-              this.generateActaDigital('fail', data, dataDesc, servicio);
-            }
-          });
-          alerta.present();
+        let alerta = this.alertCtrl.create();
+        alerta.setTitle('Descripción de Cita Fallida');
 
-        },500);
+        for (let desc of this.list_description) {
+          alerta.addInput({
+            type: 'radio',
+            label: desc.name,
+            value: desc.id,
+            checked: false
+          });
+        }
+
+        alerta.addButton('Cancel');
+        alerta.addButton({
+          text: 'OK',
+          handler: dataDesc => {
+            this.update_mantenimiento('fail', data, dataDesc, servicio);
+          }
+        });
+        alerta.present();
       }
     });
     alert.present();
@@ -391,33 +474,23 @@ export class HomePage {
 
   }
 
-  private generateActaDigital(motivo, causa, detalleCausa, servicio) {
-    let infoCausa: Array<any> = [];
-    let infoDetalleCausa: Array<any> = [];
-
-    for (let i = 0; i < this.list_cause.length; i++) {
-      if (this.list_cause[i].id == causa) {
-        infoCausa[0] = this.list_cause[i].id;
-        infoCausa[1] = this.list_cause[i].name;
-      }
-    }
-    for (let j = 0; j < this.list_description.length; j++) {
-      if (this.list_description[j].id == detalleCausa) {
-        infoDetalleCausa[0] = this.list_description[j].id;
-        infoDetalleCausa[1] = this.list_description[j].name;
-      }
-    }
+  private update_mantenimiento(motivo, cause, desc, servicio) {
     let data = {
-      fail_cause_id: infoCausa,
+      fail_cause_id: cause,
       assignment_status: motivo,
-      fail_description_id: infoDetalleCausa,
+      fail_description_id: desc,
       finished: 'true',
       kanban_state: 'blocked'
     }
-    let params: Array<any> = [];
-    params['dataMantenimiento'] = this.listaServicios[servicio];
-    params['data'] = data;
-    this.navCtrl.push(ActaDigitalPage, params);
+    this.odooRpc.updateRecord(this.tableServicios, this.listaServicios[servicio].id, data);
+    this.utils.presentToast(
+      this.listaServicios[servicio].name + " se Elimino con Exito",
+      5000,
+      true,
+      "top"
+    );
+    this.listaServicios.splice(servicio, 1);
+
   }
 
 }
