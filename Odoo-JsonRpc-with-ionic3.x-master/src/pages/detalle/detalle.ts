@@ -283,12 +283,14 @@ export class DetallePage {
           number_sap: data[record].number_sap,
           coordinate: data[record].coordinate
         });
+        console.log(this.dataMantenimiento);
         this.carge_map(data[record].coordinate);
         if (data[record].customer_asset_ids.length > 0) {
           this.get_detalle_task(data[record].id);
         }
       }
     });
+
   }
   private get_detalle_task(idTask): void {
     let partner = "project.customer.asset";

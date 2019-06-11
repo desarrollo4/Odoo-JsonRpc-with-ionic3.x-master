@@ -14,7 +14,7 @@ import { NotificacionesPage } from './../notificaciones/notificaciones';
   templateUrl: "home.html"
 })
 export class HomePage {
-  @ViewChild('searchbar') searchbar:Searchbar;
+  @ViewChild('searchbar') Vsearchbar:Searchbar;
 
 
   // splash = true;
@@ -88,6 +88,14 @@ export class HomePage {
   private list_description: any;
   private logiData: any;
 
+  allData = []; //Store all data from provider
+  filterData = [];//Store filtered data
+  searchTerm: string = '';
+
+  allDataOportunidades = [];
+  filterDataOportunidades = [];
+  searchOpor: string = '';
+
   constructor(public modalController: ModalController, private navCtrl: NavController, private odooRpc: OdooJsonRpc, private alertCtrl: AlertController, private network: Network, private alert: AlertController, private utils: Utils, public loadingCtrl: LoadingController, private oneSignal: OneSignal, public menu: MenuController) {
 
   }
@@ -111,7 +119,8 @@ export class HomePage {
     searchbar.style.display = "block";
     btnsearch.style.display = "none";
     closebar.style.display  = "block";
-    this.searchbar.setFocus();
+    this.Vsearchbar.setFocus();
+    
 
   }
 
@@ -122,8 +131,14 @@ export class HomePage {
     var closebar  = document.getElementById('closebar');
     var btnsearch = document.getElementById('btnsearch');
     var searchbar = document.getElementById('searchbar');
+    
+    searchbar.nodeValue = '';
+    this.Vsearchbar.clearInput(null);
+    this.allData = this.listaServicios;
+    this.filterData = this.allData;
 
     searchbar.style.display = "none";
+    this.searchTerm = '';
     btnsearch.style.display = "block";
     title.style.display     = "block";
     noti.style.display      = "block";
@@ -147,7 +162,18 @@ export class HomePage {
   }
 
   ionViewDidEnter(){
+    this.allData = this.listaServicios;
+    this.filterData = this.allData;
+
+    this.allDataOportunidades     = this.listaOportunidades;
+    this.filterDataOportunidades  = this.allDataOportunidades;
   }
+  setFilter(){
+    this.filterData = this.allData.filter((item) => {
+      return item.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
+    });
+  }
+  
   ionViewDidLoad() {
     let loading = this.loadingCtrl.create({
       content: "Estamos preparando todo..."
