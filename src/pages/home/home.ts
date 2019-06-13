@@ -3,7 +3,7 @@ import { Utils } from "../../services/utils";
 import { DetallePage } from "../detalle/detalle";
 import { OdooJsonRpc } from "../../services/odoojsonrpc";
 import { Component, ViewChild } from "@angular/core";
-import { NavController, AlertController, LoadingController, MenuController, ModalController, Searchbar} from "ionic-angular";
+import { NavController, AlertController, LoadingController, MenuController, ModalController, Searchbar } from "ionic-angular";
 import { Network } from "@ionic-native/network";
 import { ProfilePage } from "../profile/profile";
 import { OneSignal } from '@ionic-native/onesignal';
@@ -15,7 +15,7 @@ import { ActaDigitalPage } from '../acta-digital/acta-digital';
   templateUrl: "home.html"
 })
 export class HomePage {
-  @ViewChild('searchbar') Vsearchbar:Searchbar;
+  @ViewChild('searchbar') Vsearchbar: Searchbar;
 
 
   // splash = true;
@@ -30,6 +30,7 @@ export class HomePage {
 
   private listaOportunidades: Array<{
     id: number;
+    sec: string;
     probability: number;
     partner_id: string;
     name: string;
@@ -43,6 +44,7 @@ export class HomePage {
     probability: number;
     partner_id: string;
     name: string;
+    sec:string;
     colorDanger: boolean;
     colorwarning: boolean;
     colorSuccess: boolean;
@@ -93,10 +95,6 @@ export class HomePage {
   filterData = [];//Store filtered data
   searchTerm: string = '';
 
-  allDataOportunidades = [];
-  filterDataOportunidades = [];
-  searchOpor: string = '';
-
   constructor(public modalController: ModalController, private navCtrl: NavController, private odooRpc: OdooJsonRpc, private alertCtrl: AlertController, private network: Network, private alert: AlertController, private utils: Utils, public loadingCtrl: LoadingController, private oneSignal: OneSignal, public menu: MenuController) {
 
   }
@@ -106,50 +104,49 @@ export class HomePage {
     modal.present();
   }
 
-  search(){
-    var title     = document.getElementById('title');
-    var noti      = document.getElementById('noti');
-    var perfil    = document.getElementById('perfil');
+  search() {
+    var title = document.getElementById('title');
+    var noti = document.getElementById('noti');
+    var perfil = document.getElementById('perfil');
     var searchbar = document.getElementById('searchbar');
-    var closebar  = document.getElementById('closebar');
+    var closebar = document.getElementById('closebar');
     var btnsearch = document.getElementById('btnsearch');
 
-    title.style.display     = "none";
-    noti.style.display      = "none";
-    perfil.style.display    = "none";
+    title.style.display = "none";
+    noti.style.display = "none";
+    perfil.style.display = "none";
     searchbar.style.display = "block";
     btnsearch.style.display = "none";
-    closebar.style.display  = "block";
+    closebar.style.display = "block";
     this.Vsearchbar.setFocus();
-    
+
 
   }
 
-  closebar(){
-    var title     = document.getElementById('title');
-    var noti      = document.getElementById('noti');
-    var perfil    = document.getElementById('perfil');
-    var closebar  = document.getElementById('closebar');
+  closebar() {
+    var title = document.getElementById('title');
+    var noti = document.getElementById('noti');
+    var perfil = document.getElementById('perfil');
+    var closebar = document.getElementById('closebar');
     var btnsearch = document.getElementById('btnsearch');
     var searchbar = document.getElementById('searchbar');
-    
+
     searchbar.nodeValue = '';
     this.Vsearchbar.clearInput(null);
-    this.allData = this.listaServicios;
+    this.allData = (this.homeMantemimiento == true) ? this.listaServicios : this.listaOportunidades;
     this.filterData = this.allData;
 
     searchbar.style.display = "none";
     this.searchTerm = '';
     btnsearch.style.display = "block";
-    title.style.display     = "block";
-    noti.style.display      = "block";
-    perfil.style.display    = "block";
-    closebar.style.display  = "none";
+    title.style.display = "block";
+    noti.style.display = "block";
+    perfil.style.display = "block";
+    closebar.style.display = "none";
   }
 
 
   Refresh(refresher) {
-    console.log('Begin async operation');
     this.listaOportunidades = [];
     this.listaServicios = [];
     setTimeout(() => {
@@ -157,24 +154,21 @@ export class HomePage {
       refresher.complete();
     }, 1000);
     setTimeout(() => {
-      console.log('Async operation has ended');
       refresher.target.complete();
     }, 2000);
   }
 
-  ionViewDidEnter(){
-    this.allData = this.listaServicios;
+  ionViewDidEnter() {
+    this.allData = (this.homeMantemimiento == true) ? this.listaServicios : this.listaOportunidades;
     this.filterData = this.allData;
 
-    this.allDataOportunidades     = this.listaOportunidades;
-    this.filterDataOportunidades  = this.allDataOportunidades;
   }
-  setFilter(){
+  setFilter() {
     this.filterData = this.allData.filter((item) => {
-      return item.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
+      return (this.homeMantemimiento == true)?item.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1:item.sec.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
     });
   }
-  
+
   ionViewDidLoad() {
     let loading = this.loadingCtrl.create({
       content: "Estamos preparando todo..."
@@ -237,6 +231,7 @@ export class HomePage {
             id: query[i].id,
             probability: query[i].probability == false ? "N/A" : query[i].probability,
             name: query[i].name == false ? "N/A" : query[i].name,
+            sec: query[i].sec == false ? "N/A" : query[i].sec,
             partner_id: query[i].partner_id == false ? "N/A" : query[i].partner_name,
             colorDanger: query[i].probability < 30 ? true : false,
             colorwarning: query[i].probability >= 30 && query[i].probability < 70 ? true : false,
@@ -443,7 +438,7 @@ export class HomePage {
           });
           alerta.present();
 
-        },500);
+        }, 500);
       }
     });
     alert.present();
