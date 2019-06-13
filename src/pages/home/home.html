@@ -59,36 +59,7 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <!-- <button ion-button secondary menuToggle>Toggle Menu</button> -->
-<!--   <ion-list *ngIf="homeComercial" no-lines [virtualScroll]="listaOportunidades">
-    <ion-item-sliding *virtualItem="let item; let i = index">
 
-      <ion-item (click)="view(i)">
-        <ion-card>
-          <h1>{{item.name}}</h1>
-          <p>{{item.partner_id}}</p>
-          <h2 *ngIf="item.colorDanger">
-            <p style="color:#F44336;">{{item.probability}}%</p>
-          </h2>
-          <h2 *ngIf="item.colorwarning">
-            <p style="color: #FF9800;">{{item.probability}}%</p>
-          </h2>
-          <h2 *ngIf="item.colorSuccess">
-            <p style="color:#4CAF50;">{{item.probability}}%</p>
-          </h2>
-      </ion-card>
-
-      </ion-item>
-      <ion-item-options>
-        <button ion-button color="primary" (click)="FormProbabilidad('update',i)">
-          Actualizar
-        </button>
-        <button ion-button color="danger" (click)="delete(i)">
-          Eliminar
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list> -->
 <div *ngIf="homeComercial">
   <ion-list   *ngFor="let item of filterDataOportunidades; let i = index">
     <ion-item-sliding>
