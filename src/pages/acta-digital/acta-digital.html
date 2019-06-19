@@ -100,12 +100,18 @@
     </ng-template>
   </ion-grid>
   <div align="left">
+    <br>
     <ion-item>
-      <ion-label stacked>Observaciones del Técnico</ion-label>
+      <ion-label>¿Mantenimiento Finalizado?</ion-label>
+      <ion-checkbox name="status" [(ngModel)]="status"></ion-checkbox>
+    </ion-item>
+    <br>
+    <ion-item>
+      <ion-label floating>Observaciones del Técnico</ion-label>
       <ion-input type="text" [(ngModel)]="observation_user"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label stacked>Cliente</ion-label>
+      <ion-label floating>Cliente</ion-label>
       <ion-select [(ngModel)]="cliente" #cli id="cli" (ionChange)="persistCliente()">
         <ion-option value="addCustomer">
           <--CREAR CLIENTE NUEVO-->
@@ -114,15 +120,15 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label stacked>Identificación del Contacto</ion-label>
+      <ion-label floating>Identificación del Contacto</ion-label>
       <ion-input type="number" [(ngModel)]="functionary_vat"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label stacked>Nombre del Funcionario</ion-label>
+      <ion-label floating>Nombre del Funcionario</ion-label>
       <ion-input type="text" [(ngModel)]="functionary_name"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label stacked>Email del Funcionario</ion-label>
+      <ion-label floating>Email del Funcionario</ion-label>
       <ion-input type="email" [(ngModel)]="functionary_email"></ion-input>
     </ion-item>
     <ion-item *ngIf="!finish">

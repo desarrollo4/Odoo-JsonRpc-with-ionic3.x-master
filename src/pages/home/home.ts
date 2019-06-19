@@ -44,7 +44,7 @@ export class HomePage {
     probability: number;
     partner_id: string;
     name: string;
-    sec:string;
+    sec: string;
     colorDanger: boolean;
     colorwarning: boolean;
     colorSuccess: boolean;
@@ -165,7 +165,7 @@ export class HomePage {
   }
   setFilter() {
     this.filterData = this.allData.filter((item) => {
-      return (this.homeMantemimiento == true)?item.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1:item.sec.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
+      return (this.homeMantemimiento == true) ? item.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1 : item.sec.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
     });
   }
 
@@ -261,6 +261,8 @@ export class HomePage {
         }
       }
     }
+    this.allData = (this.homeMantemimiento == true) ? this.listaServicios : this.listaOportunidades;
+    this.filterData = this.allData;
   }
 
   public view(idx: number): void {

@@ -39,6 +39,7 @@ export class ActaDigitalPage {
   private firma: String = "";
   private Datafirma: String = "";
   private observation_user: any = null;
+  private status: boolean = false;
   private functionary_vat: any = null;
   private functionary_name: any = null;
   private functionary_email: any = null;
@@ -183,7 +184,8 @@ export class ActaDigitalPage {
         functionary_email: this.functionary_email,
         origin_tech_coord: this.dataMantenimiento.origin_tech_coord,
         entry_time: this.dataMantenimiento.entry_time,
-        departure_time: year + "-" + month + "-" + day + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+        departure_time: year + "-" + month + "-" + day + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
+        assignment_status: (this.status)?'correct':'partial'
       }
       let geocoder = new google.maps.Geocoder;
       let latlngStr = this.dataMantenimiento.origin_tech_coord.split(',', 2);
@@ -246,7 +248,7 @@ export class ActaDigitalPage {
         }
       }).catch((err: any) => {
         salida = false;
-      })
+      });
     });
     salida = true
     return salida;
