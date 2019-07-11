@@ -7,16 +7,17 @@
     }
 
     #map {
-      position: relative;
+      position: fixed !important;;
       width: 100%;
       height: 50% !important;
+      //overflow: visible !important;
     }
 
     #direccion {
       max-height: 200px;
       overflow: scroll;
-      position: relative;
-      z-index: 1;
+      position: inherit;
+      margin-top: 75%;
     }
 
     .bg-image {

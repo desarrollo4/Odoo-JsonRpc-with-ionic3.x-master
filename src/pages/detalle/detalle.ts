@@ -94,6 +94,9 @@ export class DetallePage {
   private session: any = JSON.parse(localStorage.getItem('token'));
   constructor(public navCtrl: NavController, public navParams: NavParams, private plt: Platform, private odooRpc: OdooJsonRpc, private alertCtrl: AlertController, private sanitizer: DomSanitizer) {
     this.oportunity = navParams.get("id");
+
+/*     console.log("IDoportunity");
+    console.log(this.oportunity); */
     this.valida_session();
   }
   ionViewDidLoad() {
@@ -195,7 +198,8 @@ export class DetallePage {
   }
   private addProspecto() {
     let params = {
-      id: this.oportunity
+      id: this.oportunity,
+      city : this.data['city']
     };
     this.navCtrl.push(ProspectoPage, params);
   }

@@ -32,7 +32,7 @@ import { DataBaseProvider } from '../providers/data-base/data-base';
 import { NetworkProvider } from '../providers/network/network';
 import { SQLite} from '@ionic-native/sqlite';
 import { NotificacionesPage} from "../pages/notificaciones/notificaciones"
-
+import { Base64 } from '@ionic-native/base64';
 @NgModule({
   declarations: [
     MyApp,
@@ -87,8 +87,9 @@ import { NotificacionesPage} from "../pages/notificaciones/notificaciones"
     GoogleMaps,
     ApiProvider,
     DataBaseProvider,
-    NetworkProvider, 
-    SQLite
+    NetworkProvider,
+    SQLite,
+    Base64
   ]
 })
 export class AppModule { }

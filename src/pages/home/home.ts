@@ -19,14 +19,14 @@ export class HomePage {
 
 
   // splash = true;
-  doRefresh(refresher) {
+/*   doRefresh(refresher) {
     this.listaOportunidades = [];
     this.listaServicios = [];
     setTimeout(() => {
       this.display();
       refresher.complete();
     }, 1000);
-  }
+  } */
 
   private listaOportunidades: Array<{
     id: number;
@@ -99,6 +99,17 @@ export class HomePage {
 
   }
 
+  doRefresh(refresher) {
+    this.listaOportunidades = [];
+    this.listaServicios = [];
+    setTimeout(() => {
+        this.get_causas();
+        this.display();
+
+      refresher.complete();
+    }, 1000);
+  }
+
   Notifications() {
     let modal = this.modalController.create(NotificacionesPage);
     modal.present();
@@ -124,10 +135,10 @@ export class HomePage {
   }
 
   closebar() {
-    var title = document.getElementById('title');
-    var noti = document.getElementById('noti');
-    var perfil = document.getElementById('perfil');
-    var closebar = document.getElementById('closebar');
+    var title     = document.getElementById('title');
+    var noti      = document.getElementById('noti');
+    var perfil    = document.getElementById('perfil');
+    var closebar  = document.getElementById('closebar');
     var btnsearch = document.getElementById('btnsearch');
     var searchbar = document.getElementById('searchbar');
 
@@ -146,22 +157,12 @@ export class HomePage {
   }
 
 
-  Refresh(refresher) {
-    this.listaOportunidades = [];
-    this.listaServicios = [];
-    setTimeout(() => {
-      this.display();
-      refresher.complete();
-    }, 1000);
-    setTimeout(() => {
-      refresher.target.complete();
-    }, 2000);
-  }
 
   ionViewDidEnter() {
     this.allData = (this.homeMantemimiento == true) ? this.listaServicios : this.listaOportunidades;
     this.filterData = this.allData;
-
+    console.log("filterData");
+    console.log(this.filterData);
   }
   setFilter() {
     this.filterData = this.allData.filter((item) => {
@@ -189,8 +190,9 @@ export class HomePage {
     }
     loading.dismiss();
   }
-  private display(): void {
 
+  private display(): void {
+    console.log("actualizando oportunidades ? ");
     let table = '';
     let domain = [];
     let filter = [];
@@ -274,6 +276,7 @@ export class HomePage {
     } else {
       console.log('NO ESTA DEFINIDO EL ROL');
     }
+    console.log(params);
     this.navCtrl.push(DetallePage, params);
   }
 

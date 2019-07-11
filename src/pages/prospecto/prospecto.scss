@@ -2,7 +2,11 @@ page-prospecto {
     .div_cctv{
         display: none;
     }
-    ion-badge{
-        background:  blue;
+    ion-badge {
+      white-space: normal !important;
+    }
+    .center_item{
+      margin-left: auto;
+      margin-right: auto;
     }
 }

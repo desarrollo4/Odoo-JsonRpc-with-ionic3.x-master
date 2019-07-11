@@ -83,6 +83,7 @@
       <ion-item-sliding>
         <ion-item (click)="view(i)">
           <ion-card>
+           <!-- <p> {{item.id}} </p> -->
             <h1>{{item.sec}}</h1>
             <p>{{item.name}}</p>
             <p>{{item.partner_id}}</p>
@@ -116,7 +117,7 @@
         <ion-item (click)="view(i)">
           <ion-card>
             <h1>{{item.name}}</h1>
-            <p>{{item.partner_id[1]}}</p>
+        <!-- <p>{{item.partner_id[1]}}</p> -->
             <p style="color:grey"><strong>{{item.sec}}</strong></p>
             <p style="color:grey"><strong>Número SAP: </strong>{{item.number_sap}}</p>
             <p style="color:grey"><strong>{{item.city_id}}<br>{{item.location_id}}|{{item.branch_type}}</strong></p>
@@ -132,8 +133,14 @@
     </ion-list>
   </div>
 
-  <button *ngIf="homeComercial" ion-fab color="secondary" (click)="FormProbabilidad('create')">
+<!--   <button *ngIf="homeComercial" ion-fab color="secondary" (click)="FormProbabilidad('create')">
     <ion-icon name="md-add"></ion-icon>
-  </button>
+  </button> -->
+
+
+  <ion-fab *ngIf="homeComercial" right bottom (click)="FormProbabilidad('create')">
+      <button ion-fab ><ion-icon name="add" ></ion-icon></button>
+  </ion-fab>
+
 
 </ion-content>
