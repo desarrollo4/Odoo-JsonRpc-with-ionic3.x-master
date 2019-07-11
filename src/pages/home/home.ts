@@ -161,8 +161,6 @@ export class HomePage {
   ionViewDidEnter() {
     this.allData = (this.homeMantemimiento == true) ? this.listaServicios : this.listaOportunidades;
     this.filterData = this.allData;
-    console.log("filterData");
-    console.log(this.filterData);
   }
   setFilter() {
     this.filterData = this.allData.filter((item) => {
@@ -192,7 +190,6 @@ export class HomePage {
   }
 
   private display(): void {
-    console.log("actualizando oportunidades ? ");
     let table = '';
     let domain = [];
     let filter = [];
@@ -278,7 +275,6 @@ export class HomePage {
     } else {
       console.log('NO ESTA DEFINIDO EL ROL');
     }
-    console.log(params);
     this.navCtrl.push(DetallePage, params);
   }
 
