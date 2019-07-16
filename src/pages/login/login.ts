@@ -38,7 +38,7 @@ export class LoginPage {
     });
     loading.present();
     this.odooRpc.init({
-      odoo_server: "http://erp.allser.com.co",
+      odoo_server: "https://erp.allser.com.co",
       http_auth: "username:password" // optional
     });
     this.odooRpc.getDbList().then((dbList: any) => {
