@@ -50,7 +50,7 @@ export class MyApp {
       let jsonData = JSON.parse(response);
       let username = jsonData["username"];
       let pass = jsonData["password"];
-      let url = (jsonData["web.base.url"]) ? jsonData["web.base.url"] : "http://erp.allser.com.co";
+      let url = (jsonData["web.base.url"]) ? jsonData["web.base.url"] : "http://erp.allser.com.co:8088";
       let db = jsonData["db"];
       this.odooRpc.init({
         odoo_server: url,
