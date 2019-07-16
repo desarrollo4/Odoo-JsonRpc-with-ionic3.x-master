@@ -18,7 +18,7 @@ export class LoginPage {
   public odooUrl;
   public selectedProtocol;
   private dbList: Array<{ dbName: string; }> = [];
-  private selectedDatabase: any = "allservice_test";
+  private selectedDatabase: any = "allservice";
   private email;
   private password;
   private arregloPermisos: any;
@@ -38,7 +38,7 @@ export class LoginPage {
     });
     loading.present();
     this.odooRpc.init({
-      odoo_server: "http://erp.allser.com.co:8088",
+      odoo_server: "https://erp.allser.com.co",
       http_auth: "username:password" // optional
     });
     this.odooRpc.getDbList().then((dbList: any) => {
